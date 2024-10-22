@@ -541,7 +541,7 @@ public class GestureCenter {
         //停止音效播放
         gestureData.setSoundEffects(new Sound("stop"));
         Motion motion = new Motion();
-        motion.setNumber(0);
+        motion.number = 0;
         gestureData.setFootAction(motion);
         list.add(gestureData);
         return list;
@@ -552,7 +552,7 @@ public class GestureCenter {
         GestureData gestureData = new GestureData();
         gestureData.setExpression(new Face("h0050"));
         Motion motion = new Motion();
-        motion.setNumber(34);
+        motion.number = 34;
         gestureData.setFootAction(motion);
         list.add(gestureData);
         return list;
@@ -563,7 +563,7 @@ public class GestureCenter {
         GestureData gestureData = new GestureData();
         gestureData.setExpression(new Face("h0006"));
         Motion motion = new Motion();
-        motion.setNumber(25);
+        motion.number = 25;
         gestureData.setFootAction(motion);
         list.add(gestureData);
         return list;
@@ -583,7 +583,7 @@ public class GestureCenter {
         gestureData.setExpression(new Face(fallGroundFace[getRandomIndex(fallGroundFace.length)]));
         gestureData.setSoundEffects(new Sound(fallGroundSound[getRandomIndex(fallGroundSound.length)]));
         Motion downMotion = new Motion();
-        downMotion.setNumber(fallGroundMotion[getRandomIndex(fallGroundMotion.length)]);
+        downMotion.number = fallGroundMotion[getRandomIndex(fallGroundMotion.length)];
         gestureData.setFootAction(downMotion);
         // AntennaMotion antennaMotion = new AntennaMotion(fallEar[getRandomIndex(fallEar.length)]);
         // AntennaLight light = new AntennaLight("on", getRandomIndex(9));
@@ -608,7 +608,7 @@ public class GestureCenter {
         gestureData.setExpression(new Face(fallDownFace[getRandomIndex(fallDownFace.length)]));
         gestureData.setSoundEffects(new Sound(fallDownSound[getRandomIndex(fallDownSound.length)]));
         Motion downMotion = new Motion();
-        downMotion.setNumber(fallDownMotion[getRandomIndex(fallDownMotion.length)]);
+        downMotion.number = fallDownMotion[getRandomIndex(fallDownMotion.length)];
         gestureData.setFootAction(downMotion);
         // AntennaMotion antennaMotion = new AntennaMotion(fallEar[getRandomIndex(fallEar.length)]);
         // AntennaLight light = new AntennaLight("on", getRandomIndex(9));
@@ -633,7 +633,7 @@ public class GestureCenter {
         gestureData.setExpression(new Face(tapFace[getRandomIndex(tapFace.length)]));
         gestureData.setSoundEffects(new Sound(tapSound[getRandomIndex(tapSound.length)]));
         Motion downMotion = new Motion();
-        downMotion.setNumber(tapMotion[getRandomIndex(tapMotion.length)]);
+        downMotion.number = tapMotion[getRandomIndex(tapMotion.length)];
         gestureData.setFootAction(downMotion);
         // AntennaMotion antennaMotion = new AntennaMotion(fallEar[getRandomIndex(fallEar.length)]);
         AntennaLight light = new AntennaLight("on", getRandomIndex(9));
@@ -658,7 +658,7 @@ public class GestureCenter {
         gestureData.setExpression(new Face(doubleTapFace[getRandomIndex(doubleTapFace.length)]));
         gestureData.setSoundEffects(new Sound(doubleTapSound[getRandomIndex(doubleTapSound.length)]));
         Motion downMotion = new Motion();
-        downMotion.setNumber(doubleTapMotion[getRandomIndex(doubleTapMotion.length)]);
+        downMotion.number = doubleTapMotion[getRandomIndex(doubleTapMotion.length)];
         gestureData.setFootAction(downMotion);
         // AntennaMotion antennaMotion = new AntennaMotion(fallEar[getRandomIndex(fallEar.length)]);
         AntennaLight light = new AntennaLight("on", getRandomIndex(9));
@@ -683,7 +683,7 @@ public class GestureCenter {
         gestureData.setExpression(new Face(longPressFace[getRandomIndex(longPressFace.length)]));
         gestureData.setSoundEffects(new Sound(longPressSound[getRandomIndex(longPressSound.length)]));
         Motion downMotion = new Motion();
-        downMotion.setNumber(longPressMotion[getRandomIndex(longPressMotion.length)]);
+        downMotion.number = longPressMotion[getRandomIndex(longPressMotion.length)];
         gestureData.setFootAction(downMotion);
         // AntennaMotion antennaMotion = new AntennaMotion(fallEar[getRandomIndex(fallEar.length)]);
         AntennaLight light = new AntennaLight("on", getRandomIndex(9));
@@ -708,7 +708,7 @@ public class GestureCenter {
         GestureData data1 = new GestureData();
 //        data1.setFootAction(new Motion(ATCmdConsts.AT_STR_MOVEW_SHAKE_LEFT_FOOT1, 1));
         Motion motion = new Motion();
-        motion.setNumber(danglingMotion[getRandomIndex(danglingMotion.length)]);
+        motion.number = danglingMotion[getRandomIndex(danglingMotion.length)];
         data1.setFootAction(motion);
         data1.setExpression(new Face(danglingFace[getRandomIndex(danglingFace.length)]));
         data1.setSoundEffects(new Sound("a0076"));
@@ -729,8 +729,8 @@ public class GestureCenter {
         GestureData data1 = new GestureData();
 //        data1.setFootAction(new Motion(ATCmdConsts.AT_STR_MOVEW_SHAKE_LEFT_FOOT1, 1));
         Motion motion = new Motion();
-        motion.setNumber(34);
-        motion.setStepNum(4);
+        motion.number = 34;
+        motion.stepNum = 4;
         data1.setFootAction(motion);
         data1.setExpression(new Face("h0027"));
         data1.setSoundEffects(new Sound("click"));
@@ -778,8 +778,8 @@ public class GestureCenter {
         ArrayList<GestureData> list = new ArrayList<>();
         GestureData data1 = getFallGesture();
         Motion motion = new Motion();
-        motion.setNumber(63);
-        motion.setStepNum(3);
+        motion.number = 63;
+        motion.stepNum = 3;
         data1.setFootAction(motion);
 
         list.add(data1);
@@ -793,8 +793,8 @@ public class GestureCenter {
         ArrayList<GestureData> list = new ArrayList<>();
         GestureData data1 = getFallGesture();
         Motion motion = new Motion();
-        motion.setNumber(64);
-        motion.setStepNum(3);
+        motion.number = 64;
+        motion.stepNum = 3;
         data1.setFootAction(motion);
         list.add(data1);
         return list;
@@ -807,8 +807,8 @@ public class GestureCenter {
         ArrayList<GestureData> list = new ArrayList<>();
         GestureData data1 = getFallGesture();
         Motion motion = new Motion();
-        motion.setNumber(6);
-        motion.setStepNum(3);
+        motion.number = 6;
+        motion.stepNum = 3;
         data1.setFootAction(motion);
         list.add(data1);
         return list;
@@ -821,8 +821,8 @@ public class GestureCenter {
         ArrayList<GestureData> list = new ArrayList<>();
         GestureData data1 = getFallGesture();
         Motion motion = new Motion();
-        motion.setNumber(5);
-        motion.setStepNum(3);
+        motion.number = 5;
+        motion.stepNum = 3;
         data1.setFootAction(motion);
         list.add(data1);
         return list;
@@ -841,8 +841,8 @@ public class GestureCenter {
         data.setExpressionTime(1);
         data.setSoundEffects(new Sound(SoundEffect.COMMAND_VALUE_SOUND_FEAR));
         AntennaMotion antennaMotion = new AntennaMotion(3);
-        antennaMotion.setSpeed(60);
-        antennaMotion.setAngle(90);
+        antennaMotion.speed = 60;
+        antennaMotion.angle = 90;
         data.setEarAction(antennaMotion);
         data.setInterval(2000);
         list.add(data);
@@ -1025,8 +1025,8 @@ public class GestureCenter {
         GestureData data2 = new GestureData();
         data2.setAntennalight(new AntennaLight("on", getRandomIndex(9)));
         AntennaMotion antennaMotion = new AntennaMotion(3);
-        antennaMotion.setSpeed(600);
-        antennaMotion.setAngle(45);
+        antennaMotion.speed = 600;
+        antennaMotion.angle = 45;
         data2.setEarAction(antennaMotion);
         data2.setInterval(2000);
         list.add(data2);

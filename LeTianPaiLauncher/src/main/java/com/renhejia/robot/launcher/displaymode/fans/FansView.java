@@ -79,13 +79,13 @@ public class FansView extends RelativeLayout {
     }
 
     private void updateViews(FansInfo fansInfo) {
-        if (fansInfo == null || fansInfo.getData() == null || fansInfo.getData().length == 0 || fansInfo.getData()[0] == null || fansInfo.getData()[0].getFans_count() == null
-                || fansInfo.getData()[0].getNick_name() == null || fansInfo.getData()[0].getAvatar() == null
+        if (fansInfo == null || fansInfo.data == null || fansInfo.data.length == 0 || fansInfo.data[0] == null || fansInfo.data[0].fans_count == null
+                || fansInfo.data[0].nick_name == null || fansInfo.data[0].avatar == null
         ) {
             return;
         }
         Log.e("letianpai_20230427", "fansInfo:" + fansInfo.toString());
-        int number = Integer.parseInt(fansInfo.getData()[0].getFans_count());
+        int number = Integer.parseInt(fansInfo.data[0].fans_count);
         if (number > 10000){
             float numbers  = (float) number/10000;
             DecimalFormat df = new DecimalFormat("0.0");//格式化小数
@@ -94,14 +94,14 @@ public class FansView extends RelativeLayout {
         }else{
             tvFansNum.setText(number);
         }
-        if (fansInfo.getData()[0].getPlatform().equals(BILIBILI)){
+        if (fansInfo.data[0].platform.equals(BILIBILI)){
             ivFans.setImageResource(R.drawable.bili_fans);
         }else{
             ivFans.setImageResource(R.drawable.weibo_fans);
         }
 
-        tvName.setText(fansInfo.getData()[0].getNick_name());
-        String url = fansInfo.getData()[0].getAvatar();
+        tvName.setText(fansInfo.data[0].nick_name);
+        String url = fansInfo.data[0].avatar;
         uploadIcon(url);
     }
 

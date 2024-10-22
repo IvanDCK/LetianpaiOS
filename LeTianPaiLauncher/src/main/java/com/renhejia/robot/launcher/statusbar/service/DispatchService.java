@@ -213,8 +213,8 @@ public class DispatchService extends Service {
                     try {
                         if (info != null) {
                             serverTime = new Gson().fromJson(info, ServerTime.class);
-                            if (serverTime != null && serverTime.getCode() == 0 && serverTime.getData() != null && serverTime.getData().getTimestamp() != 0) {
-                                changeTime(serverTime.getData().getTimestamp() * 1000);
+                            if (serverTime != null && serverTime.code == 0 && serverTime.data != null && serverTime.data.timestamp != 0) {
+                                changeTime(serverTime.data.timestamp * 1000);
                             }
                         }
                     }catch (Exception e){
@@ -498,8 +498,8 @@ public class DispatchService extends Service {
 
     private void updateDeviceTimeZone(String data) {
         TimeZone timeZone = gson.fromJson(data, TimeZone.class);
-        if (timeZone != null && !TextUtils.isEmpty(timeZone.getZone())){
-            SystemFunctionUtil.setTimeZone(DispatchService.this,timeZone.getZone());
+        if (timeZone != null && !TextUtils.isEmpty(timeZone.zone)){
+            SystemFunctionUtil.setTimeZone(DispatchService.this, timeZone.zone);
         }
     }
 

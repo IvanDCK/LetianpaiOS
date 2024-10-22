@@ -1,16 +1,17 @@
 //apply plugin: 'com.android.library'
 plugins {
     id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
 }
 //apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.freyskill'
 android {
-    compileSdkVersion 27
+    compileSdkVersion 34
 
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -47,6 +48,9 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 //    buildToolsVersion '26.0.2'
 }

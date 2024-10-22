@@ -53,22 +53,22 @@ public class CalendarNoticeView extends RelativeLayout {
 
     private void updateViews(CalenderInfo calenderInfo) {
         if (calenderInfo != null
-                && calenderInfo.getData().getMemo_list() != null
-                && calenderInfo.getData().getMemo_list().length > 0){
-            if (calenderInfo.getData().getMemo_list()[0] != null && calenderInfo.getData().getMemo_list()[0].getMemo_title() != null && calenderInfo.getData().getMemo_list()[0].getMemo_time_label() != null ){
+                && calenderInfo.data.memo_list != null
+                && calenderInfo.data.memo_list.length > 0){
+            if (calenderInfo.data.memo_list[0] != null && calenderInfo.data.memo_list[0].memo_title != null && calenderInfo.data.memo_list[0].memo_time_label != null ){
                 Log.e("letianpai_123456"," ====== canlendar 0=========");
-                noticeName1.setText(calenderInfo.getData().getMemo_list()[0].getMemo_title() );
-                noticeTime1.setText(calenderInfo.getData().getMemo_list()[0].getMemo_time_label());
+                noticeName1.setText(calenderInfo.data.memo_list[0].memo_title);
+                noticeTime1.setText(calenderInfo.data.memo_list[0].memo_time_label);
             }
-            if (calenderInfo.getData().getMemo_list()[1] != null && calenderInfo.getData().getMemo_list()[1].getMemo_title() != null && calenderInfo.getData().getMemo_list()[1].getMemo_time_label() != null ){
+            if (calenderInfo.data.memo_list[1] != null && calenderInfo.data.memo_list[1].memo_title != null && calenderInfo.data.memo_list[1].memo_time_label != null ){
                 Log.e("letianpai_123456"," ====== canlendar 1=========");
-                noticeName2.setText(calenderInfo.getData().getMemo_list()[1].getMemo_title() );
-                noticeTime2.setText(calenderInfo.getData().getMemo_list()[1].getMemo_time_label());
+                noticeName2.setText(calenderInfo.data.memo_list[1].memo_title);
+                noticeTime2.setText(calenderInfo.data.memo_list[1].memo_time_label);
             }
-            if (calenderInfo.getData().getMemo_list()[2] != null && calenderInfo.getData().getMemo_list()[2].getMemo_title() != null && calenderInfo.getData().getMemo_list()[2].getMemo_time_label() != null ){
+            if (calenderInfo.data.memo_list[2] != null && calenderInfo.data.memo_list[2].memo_title != null && calenderInfo.data.memo_list[2].memo_time_label != null ){
                 Log.e("letianpai_123456"," ====== canlendar 2=========");
-                noticeName3.setText(calenderInfo.getData().getMemo_list()[2].getMemo_title() );
-                noticeTime3.setText(calenderInfo.getData().getMemo_list()[2].getMemo_time_label());
+                noticeName3.setText(calenderInfo.data.memo_list[2].memo_title);
+                noticeTime3.setText(calenderInfo.data.memo_list[2].memo_time_label);
             }
         }
     }

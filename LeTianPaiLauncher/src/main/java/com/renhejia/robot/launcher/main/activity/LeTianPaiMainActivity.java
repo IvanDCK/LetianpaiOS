@@ -293,7 +293,7 @@ public class LeTianPaiMainActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                robotExpressionViewGif.updateView(logoInfo.getData().getHello_logo());
+                robotExpressionViewGif.updateView(logoInfo.data.hello_logo);
             }
         });
 

@@ -64,20 +64,20 @@ public class EventCountdownView extends RelativeLayout {
     }
 
     private void updateViews(CountDownListInfo countDownListInfo) {
-        if (countDownListInfo != null && countDownListInfo.getData() != null && countDownListInfo.getData().getEvent_list() != null && countDownListInfo.getData().getEvent_list().length >0 ){
-            if (countDownListInfo.getData().getEvent_list()[0].getEvent_title() != null){
+        if (countDownListInfo != null && countDownListInfo.data != null && countDownListInfo.data.event_list != null && countDownListInfo.data.event_list.length >0 ){
+            if (countDownListInfo.data.event_list[0].event_title != null){
 //                if (countDownListInfo.getData().getEvent_list()[0].getEvent_title().length() >10){
 //                    countdownTitle.setText((countDownListInfo.getData().getEvent_list()[0].getEvent_title()).substring(10));
 //                }
-                countdownTitle.setText(countDownListInfo.getData().getEvent_list()[0].getEvent_title() );
-                if (countDownListInfo.getData().getEvent_list()[0].getRemain_days() == 0){
+                countdownTitle.setText(countDownListInfo.data.event_list[0].event_title);
+                if (countDownListInfo.data.event_list[0].remain_days == 0){
                     countdownTime.setText("今天");
-                }else if(countDownListInfo.getData().getEvent_list()[0].getRemain_days() == 1){
+                }else if(countDownListInfo.data.event_list[0].remain_days == 1){
                     countdownTime.setText("明天");
-                }else if(countDownListInfo.getData().getEvent_list()[0].getRemain_days() == 2){
+                }else if(countDownListInfo.data.event_list[0].remain_days == 2){
                     countdownTime.setText("后天");
                 }else{
-                    countdownTime.setText(countDownListInfo.getData().getEvent_list()[0].getRemain_days() + "天后");
+                    countdownTime.setText(countDownListInfo.data.event_list[0].remain_days + "天后");
                 }
 
             }

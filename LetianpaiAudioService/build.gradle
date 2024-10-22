@@ -1,15 +1,16 @@
 plugins {
     id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
     namespace 'com.letianpai.robot.audioservice'
-    compileSdk 31
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.letianpai.robot.audioservice"
         minSdk 26
-        targetSdk 31
+        targetSdk 34
         versionCode 2401181
         versionName "1.1." + versionCode
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -44,6 +45,9 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
