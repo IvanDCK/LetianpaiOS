@@ -1,87 +1,93 @@
-package com.renhejia.robot.expression.ui.view;
+package com.renhejia.robot.expression.ui.view
 
-import android.content.Context;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
-import android.view.animation.Animation;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.renhejia.robot.commandlib.consts.RobotExpressionConsts;
-import com.renhejia.robot.expression.R;
-import com.renhejia.robot.expression.locale.LocaleUtils;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.animation.Animation
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.renhejia.robot.commandlib.consts.RobotExpressionConsts
+import com.renhejia.robot.expression.R
 
 /**
  * 机器人表情
  * @author liujunbin
  */
-public class RobotExpressionViewGif extends RelativeLayout implements RobotExpressionConsts {
-    private Context mContext;
-    private ImageView ivExpression; //
-    private TextView tvExpression;  //
-    private Animation animationNull;
+class RobotExpressionViewGif : RelativeLayout, RobotExpressionConsts {
+    private var mContext: Context? = null
+    private var ivExpression: ImageView? = null //
+    private var tvExpression: TextView? = null //
+    private val animationNull: Animation? = null
 
-    public RobotExpressionViewGif(Context context) {
-        super(context);
-        init(context);
+    constructor(context: Context) : super(context) {
+        init(context)
     }
 
-    public RobotExpressionViewGif(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init(context)
     }
 
-    public RobotExpressionViewGif(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context);
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        init(context)
     }
 
-    public RobotExpressionViewGif(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(context);
+    constructor(
+        context: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int,
+        defStyleRes: Int
+    ) : super(context, attrs, defStyleAttr, defStyleRes) {
+        init(context)
     }
 
-    private void init(Context context) {
-        this.mContext = context;
-        inflate(mContext, R.layout.robot_expression_view,this);
-        initView();
+    private fun init(context: Context) {
+        this.mContext = context
+        inflate(
+            mContext, R.layout.robot_expression_view,
+            this
+        )
+        initView()
     }
 
     /***
      * 更新
      * @param url
      */
-    public void updateView(String url){
-        if(url.lastIndexOf(".gif") > 0){
+    fun updateView(url: String) {
+        if (url.lastIndexOf(".gif") > 0) {
             Glide.with(mContext)
-                    .load(url)
-                    .asGif()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(ivExpression);
-        }else {
+                .load(url)
+                .asGif()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivExpression)
+        } else {
             Glide.with(mContext)
-                    .load(url)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(ivExpression);
+                .load(url)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivExpression)
         }
     }
 
 
-    private void initView() {
-        ivExpression = findViewById(R.id.iv_expression);
-        tvExpression = findViewById(R.id.tv_expression);
+    private fun initView() {
+        ivExpression = findViewById(R.id.iv_expression)
+        tvExpression = findViewById(R.id.tv_expression)
 
         Glide.with(mContext)
-                .load(R.drawable.launche_bg)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(ivExpression);
+            .load(R.drawable.launche_bg)
+            .asBitmap()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(ivExpression)
 
-//        if (LocaleUtils.isChinese()){
+
+        //        if (LocaleUtils.isChinese()){
 //            Glide.with(mContext)
 //                    .load(R.drawable.bluehole0415)
 //                    .asGif()
@@ -94,8 +100,6 @@ public class RobotExpressionViewGif extends RelativeLayout implements RobotExpre
 //                    .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                    .into(ivExpression);
 //        }
-
-
 
 
 //        Glide.with(mContext)
@@ -125,11 +129,5 @@ public class RobotExpressionViewGif extends RelativeLayout implements RobotExpre
 //                    }
 //                }) //仅仅加载一次gif动画
 //                .into(new GlideDrawableImageViewTarget(ivExpression, -1));
-
-
-
     }
-
-
-
 }
