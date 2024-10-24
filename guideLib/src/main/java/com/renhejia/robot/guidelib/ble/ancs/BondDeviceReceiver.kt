@@ -3,10 +3,15 @@ package com.renhejia.robot.guidelib.ble.ancs
 import android.util.Log
 import com.renhejia.robot.guidelib.ble.ancs.ANCSService.Companion.TAG
 import com.renhejia.robot.guidelib.ble.util.BlePermissions.checkBluetoothPermissions
+import com.renhejia.robot.guidelib.ble.util.PermissionRequestListener
 import com.rhj.audio.BuildConfig
 
 class BondDeviceReceiver(private val mHandler: android.os.Handler) :
     android.content.BroadcastReceiver() {
+
+    private var permissionRequestListener : PermissionRequestListener? = null
+
+
     override fun onReceive(context: android.content.Context, intent: android.content.Intent) {
         if (BuildConfig.DEBUG) {
            Log.e("<<<<<<<", "action:" + intent.action)
@@ -15,7 +20,7 @@ class BondDeviceReceiver(private val mHandler: android.os.Handler) :
             val btDevice =
                 intent.getParcelableExtra<android.bluetooth.BluetoothDevice>(android.bluetooth.BluetoothDevice.EXTRA_DEVICE)
 
-            if (checkBluetoothPermissions(context)) {
+            if (permissionRequestListener?.let { checkBluetoothPermissions(context, it) } == true) {
                 try {
 
                     if (btDevice!!.bondState == android.bluetooth.BluetoothDevice.BOND_BONDED) {

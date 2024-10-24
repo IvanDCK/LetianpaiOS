@@ -2,6 +2,8 @@ package com.renhejia.robot.launcher.statusbar.service
 
 import android.app.ActivityManager
 import android.app.ActivityManager.RunningAppProcessInfo
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.ComponentName
 import android.content.Context
@@ -9,6 +11,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.IBinder
@@ -17,6 +20,7 @@ import android.os.RemoteException
 import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.google.gson.Gson
 import com.letianpai.robot.letianpaiservice.LtpLongConnectCallback
 import com.letianpai.robot.letianpaiservice.LtpRobotStatusCallback
@@ -35,15 +39,12 @@ import com.renhejia.robot.guidelib.ble.callback.BleConnectStatusCallback
 import com.renhejia.robot.guidelib.ble.callback.GuideFunctionCallback
 import com.renhejia.robot.guidelib.ble.callback.GuideFunctionCallback.RobotShutDownListener
 import com.renhejia.robot.guidelib.manager.LTPGuideConfigManager
-import com.renhejia.robot.guidelib.manager.LTPGuideConfigManager.Companion.getInstance
 import com.renhejia.robot.guidelib.utils.SystemUtil.hasHardCode
 import com.renhejia.robot.guidelib.utils.SystemUtil.isChinese
 import com.renhejia.robot.guidelib.utils.SystemUtil.setRobotInactive
-import com.renhejia.robot.guidelib.wifi.WIFIConnectionManager.Companion.getInstance
 import com.renhejia.robot.guidelib.wifi.WIFIConnectionManager.Companion.isNetworkAvailable
 import com.renhejia.robot.launcher.audioservice.AudioCmdResponseManager
 import com.renhejia.robot.launcher.audioservice.AudioCmdResponseManager.Companion.commandResponse
-import com.renhejia.robot.launcher.audioservice.AudioCmdResponseManager.Companion.getInstance
 import com.renhejia.robot.launcher.dispatch.command.CommandResponseCallback
 import com.renhejia.robot.launcher.dispatch.command.CommandResponseCallback.CommandResponseListener
 import com.renhejia.robot.launcher.dispatch.command.CommandResponseCallback.LTPCommandResponseListener
@@ -84,6 +85,33 @@ class DispatchService : Service() {
         return null
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        startForegroundService()
+        // Your service logic here
+        return START_STICKY
+    }
+
+    private fun startForegroundService() {
+        val notificationChannelId = "com.example.notification.channel"
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                notificationChannelId,
+                "Background Service",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val manager = getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(notificationChannel)
+        }
+
+        val notification = NotificationCompat.Builder(this, notificationChannelId)
+            .setContentTitle("Service is running")
+            .setContentText("Foreground service is active")
+            .build()
+
+        startForeground(1, notification)
+    }
+
     override fun onCreate() {
         super.onCreate()
         init()
@@ -91,6 +119,9 @@ class DispatchService : Service() {
 
 
     private fun init() {
+
+
+
         gson = Gson()
         mHandler = GestureHandler(this@DispatchService)
         initConnectService()
@@ -605,6 +636,7 @@ class DispatchService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        stopForeground(true)
         unregisterRobotShutDownListener()
     }
 

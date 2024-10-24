@@ -1,18 +1,16 @@
 package com.renhejia.robot.guidelib.ble.util
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 object BlePermissions {
 
     private const val REQUEST_BLUETOOTH_PERMISSIONS = 1
 
-    fun checkBluetoothPermissions(mContext: Context): Boolean {
+    fun checkBluetoothPermissions(mContext: Context, permissionRequestListener: PermissionRequestListener): Boolean {
         val permissionsToRequest = mutableListOf<String>()
 
         // For Android 12 (API 31+) request the new permissions
@@ -34,8 +32,7 @@ object BlePermissions {
         }
 
         return if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                mContext as Activity,
+            permissionRequestListener.requestBluetoothPermissions(
                 permissionsToRequest.toTypedArray(),
                 REQUEST_BLUETOOTH_PERMISSIONS
             )

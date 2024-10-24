@@ -8,17 +8,12 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
-import com.renhejia.robot.guidelib.manager.LTPGuideConfigManager.Companion.getInstance
 import com.renhejia.robot.guidelib.utils.SystemUtil
 import com.renhejia.robot.guidelib.utils.SystemUtil.get
 import com.renhejia.robot.guidelib.wifi.WIFIConnectionManager
-import com.renhejia.robot.guidelib.wifi.WIFIConnectionManager.Companion.getInstance
-import com.renhejia.robot.launcher.audioservice.AudioCmdResponseManager.Companion.getInstance
 import com.renhejia.robot.launcher.nets.GeeUINetResponseManager
 import com.renhejia.robot.launcher.system.LetianpaiFunctionUtil
 import com.renhejia.robot.launcherbaselib.callback.NetworkChangingUpdateCallback
-import com.renhejia.robot.launcherbaselib.info.LauncherInfoManager.Companion.getInstance
-import com.renhejia.robot.launcherbaselib.storage.manager.LauncherConfigManager.Companion.getInstance
 
 class RobotService : Service() {
     private var mContext: Context? = null
@@ -246,6 +241,12 @@ class RobotService : Service() {
 
     private fun startDispatchService() {
         val intent = Intent(this@RobotService, DispatchService::class.java)
-        startService(intent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (applicationContext.packageManager.canRequestPackageInstalls()) {
+                startForegroundService(intent)
+            }
+        } else {
+            startService(intent)
+        }
     }
 }

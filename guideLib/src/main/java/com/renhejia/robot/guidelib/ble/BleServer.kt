@@ -1,7 +1,5 @@
 package com.renhejia.robot.guidelib.ble
 
-import android.Manifest
-import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGatt
@@ -20,7 +18,6 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
-import android.os.Build
 import android.os.Handler
 import android.os.Message
 import android.os.ParcelUuid
@@ -32,6 +29,7 @@ import com.renhejia.robot.guidelib.ble.callback.BleConnectStatusCallback
 import com.renhejia.robot.guidelib.ble.util.BlePermissions.checkBluetoothPermissions
 import com.renhejia.robot.guidelib.ble.util.CRC8
 import com.renhejia.robot.guidelib.ble.util.IntByteStringHexUtil
+import com.renhejia.robot.guidelib.ble.util.PermissionRequestListener
 import com.renhejia.robot.guidelib.wifi.WIFIStateReceiver
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -40,7 +38,7 @@ import java.security.NoSuchAlgorithmException
 import java.util.Locale
 import java.util.UUID
 
-class BleServer(var mContext: Context) {
+class BleServer(var mContext: Context, private val permissionRequestListener: PermissionRequestListener) {
     private fun setWifiChangedListener() {
         BleConnectStatusCallback.instance
             .registerBleConnectStatusListener { connectStatus ->
@@ -105,7 +103,7 @@ class BleServer(var mContext: Context) {
             logi(TAG, "enableBluetooth ====== 2:")
             if (!adapter.isEnabled) {
                 logi(TAG, "enableBluetooth ====== 3:")
-                if (checkBluetoothPermissions(mContext)) {
+                if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                     try {
                         // 直接开启蓝牙
                         adapter.enable()
@@ -127,24 +125,6 @@ class BleServer(var mContext: Context) {
             return
         }
 
-        // Android 6.0动态请求权限
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            logi(TAG, "enableBluetooth ====== 5:")
-            val permissions = arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            for (str in permissions) {
-                if (context.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
-                    logi(
-                        TAG,
-                        "enableBluetooth ====== 6:$str"
-                    )
-                    (context as Activity).requestPermissions(permissions, 111)
-                    break
-                }
-            }
-        }
     }
 
     private val mBluetoothGattServerCallback: BluetoothGattServerCallback =
@@ -154,7 +134,7 @@ class BleServer(var mContext: Context) {
                 status: Int,
                 newState: Int
             ) {
-                if (checkBluetoothPermissions(mContext)) {
+                if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                     try {
                         logi(
                             TAG, String.format(
@@ -204,7 +184,7 @@ class BleServer(var mContext: Context) {
                 device: BluetoothDevice, requestId: Int, offset: Int,
                 characteristic: BluetoothGattCharacteristic
             ) {
-                if (checkBluetoothPermissions(mContext)) {
+                if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                     try {
                         logi(
                             TAG, String.format(
@@ -251,7 +231,7 @@ class BleServer(var mContext: Context) {
                 // String.format("onCharacteristicWriteRequest:%s,%s,%s,%s,%s,%s,%s,%s",
                 // device.getName(), device.getAddress(), requestId, characteristic.getUuid(),
                 // preparedWrite, responseNeeded, offset, requestStr));
-                if (checkBluetoothPermissions(mContext)) {
+                if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                     try {
                         mBluetoothGattServer!!.sendResponse(
                             device,
@@ -281,7 +261,7 @@ class BleServer(var mContext: Context) {
 
                 logi(TAG, "onDescriptorReadRequest =========== 1" + descriptor.uuid + "]:\n")
 
-                if (checkBluetoothPermissions(mContext)) {
+                if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                     try {
                         logi(
                             TAG, String.format(
@@ -323,7 +303,7 @@ class BleServer(var mContext: Context) {
                 // 获取客户端发过来的数据
                 val valueStr = value.contentToString()
                 
-                if (checkBluetoothPermissions(mContext)) {
+                if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                     try {
                         logi(
                             TAG,
@@ -390,7 +370,7 @@ class BleServer(var mContext: Context) {
 
             override fun onExecuteWrite(device: BluetoothDevice, requestId: Int, execute: Boolean) {
 
-                if (checkBluetoothPermissions(mContext)) {
+                if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                     try {
                         logi(
                             TAG, String.format(
@@ -407,7 +387,7 @@ class BleServer(var mContext: Context) {
             }
 
             override fun onNotificationSent(device: BluetoothDevice, status: Int) {
-                if (checkBluetoothPermissions(mContext)) {
+                if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                     try {
                         logi(
                             TAG,
@@ -427,7 +407,7 @@ class BleServer(var mContext: Context) {
             }
 
             override fun onMtuChanged(device: BluetoothDevice, mtu: Int) {
-                if (checkBluetoothPermissions(mContext)) {
+                if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                     try {
                         logi(TAG, String.format("onMtuChanged:%s,%s,%s", device.name, device.address, mtu))
 
@@ -445,7 +425,7 @@ class BleServer(var mContext: Context) {
             context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         val bluetoothAdapter = bluetoothManager.adapter
         if (!bluetoothAdapter.isEnabled) {
-            if (checkBluetoothPermissions(mContext)) {
+            if (checkBluetoothPermissions(mContext, permissionRequestListener))  {
                 try {
                     bluetoothAdapter.enable()
                 } catch (e: SecurityException) {
@@ -487,7 +467,7 @@ class BleServer(var mContext: Context) {
 
         // setting关闭蓝牙之后，这里会空指针
         if (mBluetoothLeAdvertiser != null) {
-            if (checkBluetoothPermissions(mContext)) {
+            if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
                 try {
                     mBluetoothLeAdvertiser!!.startAdvertising(
                         settings,
@@ -542,7 +522,7 @@ class BleServer(var mContext: Context) {
             BluetoothGattCharacteristic.PROPERTY_WRITE, BluetoothGattCharacteristic.PERMISSION_WRITE
         )
         service.addCharacteristic(characteristicWrite)
-        if (checkBluetoothPermissions(mContext)) {
+        if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
             try {
                 if (bluetoothManager != null) {
 
@@ -560,7 +540,7 @@ class BleServer(var mContext: Context) {
     }
 
     fun unInit() {
-        if (checkBluetoothPermissions(mContext)) {
+        if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
             try {
                 if (mBluetoothLeAdvertiser != null) {
 
@@ -755,7 +735,7 @@ class BleServer(var mContext: Context) {
             "writeData: 发送给他人数据:$response"
         )
         characteristicRead!!.setValue(response)
-        if (checkBluetoothPermissions(mContext)) {
+        if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
             try {
                 mBluetoothGattServer!!.notifyCharacteristicChanged(
                     deviceNotifyRead,
@@ -780,7 +760,7 @@ class BleServer(var mContext: Context) {
         }
 
         characteristicRead!!.setValue(response)
-        if (checkBluetoothPermissions(mContext)) {
+        if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
             try {
                 mBluetoothGattServer!!.notifyCharacteristicChanged(
                     deviceNotifyRead,
@@ -808,7 +788,7 @@ class BleServer(var mContext: Context) {
 
 
         characteristicRead!!.setValue(response)
-        if (checkBluetoothPermissions(mContext)) {
+        if (checkBluetoothPermissions(mContext, permissionRequestListener)) {
             try {
                 mBluetoothGattServer!!.notifyCharacteristicChanged(
                     deviceNotifyRead,
@@ -919,10 +899,10 @@ class BleServer(var mContext: Context) {
         // macAddress: 88:12:AC:54:4A:A2
         // NET_SSID + "Wi-Fi名"+ NET_SPLIT + NET_PASSWORD+ "password"
         // "ssid=LETIANPAI-5G_;;_password=Renhejia0801"
-        fun getInstance(context: Context): BleServer {
+        fun getInstance(context: Context, permissionRequestListener: PermissionRequestListener): BleServer {
             synchronized(BleServer::class.java) {
                 if (instance == null) {
-                    instance = BleServer(context.applicationContext)
+                    instance = BleServer(context, permissionRequestListener)
                 }
                 return instance!!
             }

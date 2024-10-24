@@ -20,6 +20,7 @@ import android.os.HandlerThread
 import android.os.Message
 import android.util.Log
 import com.renhejia.robot.guidelib.ble.util.BlePermissions.checkBluetoothPermissions
+import com.renhejia.robot.guidelib.ble.util.PermissionRequestListener
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
@@ -35,6 +36,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
     private var handlerThread: HandlerThread? = null
 
     private var mBondDeviceReceiver: BondDeviceReceiver? = null
+    private var permissionRequestListener : PermissionRequestListener? = null
 
     //bt
     private var mBluetoothManager: BluetoothManager? = null
@@ -62,7 +64,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
 
         mBluetoothAdapter = mBluetoothManager!!.adapter
         
-        if (checkBluetoothPermissions(mContext)) {
+        if (permissionRequestListener?.let { checkBluetoothPermissions(mContext, it) } == true) {
             try {
                 if (!mBluetoothAdapter!!.isEnabled) {
                     mBluetoothAdapter!!.enable()
@@ -106,7 +108,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
             GlobalDefine.BLUETOOTH_DISCONNECT -> {}
             GlobalDefine.BLUETOOTH_BONDED -> if (mIphoneDevice != null) {
                 Log.d(TAG, "connect gatt")
-                if (checkBluetoothPermissions(mContext)) {
+                if (permissionRequestListener?.let { checkBluetoothPermissions(mContext, it) } == true) {
                     try {
                         mIphoneDevice!!.connectGatt(mContext.applicationContext, false, mGattCallback)
                     } catch (e: SecurityException) {
@@ -187,7 +189,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
 
     private fun closeGattServer() {
 
-        if (checkBluetoothPermissions(mContext)) {
+        if (permissionRequestListener?.let { checkBluetoothPermissions(mContext, it) } == true) {
             try {
                 if (bluetoothGattServer != null) {
                     bluetoothGattServer!!.clearServices()
@@ -203,7 +205,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
     
 
     fun initGATTServer() {
-        if (checkBluetoothPermissions(mContext)) {
+        if (permissionRequestListener?.let { checkBluetoothPermissions(mContext, it) } == true) {
             try {
                 bluetoothGattServer =
                     mBluetoothManager!!.openGattServer(mContext, bluetoothGattServerCallback)
@@ -279,7 +281,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
                 } else {
                     // Log.d(TAG, "find chara");
                     characteristic.setValue(getNotificationAttribute)
-                    if (checkBluetoothPermissions(mContext)) {
+                    if (permissionRequestListener?.let { checkBluetoothPermissions(mContext, it) } == true) {
                         try {
                             mConnectedGatt!!.writeCharacteristic(characteristic)
                         } catch (e: SecurityException) {
@@ -295,7 +297,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
     private fun setNotificationEnabled(characteristic: BluetoothGattCharacteristic) {
 
 
-        if (checkBluetoothPermissions(mContext)) {
+        if (permissionRequestListener?.let { checkBluetoothPermissions(mContext, it) } == true) {
             try {
                 mConnectedGatt!!.setCharacteristicNotification(characteristic, true)
                 val descriptor =
@@ -320,7 +322,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
                 Log.d(TAG, "connected")
                 mConnectedGatt = gatt
 
-                if (checkBluetoothPermissions(mContext)) {
+                if (permissionRequestListener?.let { checkBluetoothPermissions(mContext, it) } == true) {
                     try {
                         gatt.discoverServices()
                     } catch (e: SecurityException) {
@@ -434,7 +436,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
 
     private inner class LocalBluetoothGattServerCallback : BluetoothGattServerCallback() {
         override fun onConnectionStateChange(device: BluetoothDevice, status: Int, newState: Int) {
-            if (checkBluetoothPermissions(mContext)) {
+            if (permissionRequestListener?.let { checkBluetoothPermissions(mContext, it) } == true) {
                 try {
                     Log.i(
                         TAG,
@@ -455,7 +457,7 @@ class ANCSService(private val mContext: Context) : Handler.Callback {
 
             mIphoneDevice = device
             
-            if (checkBluetoothPermissions(mContext)) {
+            if (permissionRequestListener?.let { checkBluetoothPermissions(mContext, it) } == true) {
                 try {
                     if (newState == BluetoothGatt.STATE_CONNECTED) {
                         closeGattServer()

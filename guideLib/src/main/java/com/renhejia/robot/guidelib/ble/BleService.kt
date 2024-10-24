@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.res.Configuration
+import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
 import android.os.RemoteException
@@ -13,6 +14,7 @@ import android.util.Log
 import com.letianpai.robot.letianpaiservice.LtpBleResponseCallback
 import com.renhejia.robot.commandlib.log.LogUtils
 import com.renhejia.robot.guidelib.ble.ancs.ANCSService
+import com.renhejia.robot.guidelib.ble.util.PermissionRequestListener
 import com.renhejia.robot.guidelib.consts.BleConsts
 import com.renhejia.robot.letianpaiservice.ILetianpaiService
 import java.util.Locale
@@ -26,12 +28,20 @@ class BleService : Service() {
         connectService()
     }
 
+    private var permissionRequestListener : PermissionRequestListener? = null
+
+
     private fun init() {
-        BleServer.getInstance(this).initBleBlueTooth(this)
-        BleServer.getInstance(this)
-            .setBleDataListener { bleData: String? ->
-                this.readDataFromDevice(bleData)
-            }
+        permissionRequestListener?.let {
+            BleServer.getInstance(this.application, it)
+                .initBleBlueTooth(this.application)
+
+            BleServer.getInstance(this.application, it)
+                .setBleDataListener { bleData: String? ->
+                    this.readDataFromDevice(bleData)
+                }
+        }
+
     }
 
     private fun readDataFromDevice(bleData: String?) {
@@ -137,7 +147,7 @@ class BleService : Service() {
     }
 
     private fun writeDataToDevice(command: String, data: String) {
-        BleServer.getInstance(this).writeData(command + data)
+        permissionRequestListener?.let { BleServer.getInstance(this, it).writeData(command + data) }
     }
 
     private var iLetianpaiService: ILetianpaiService? = null
@@ -178,8 +188,18 @@ class BleService : Service() {
         bindService(intent, serviceConnection, BIND_AUTO_CREATE)
     }
 
-    override fun onBind(intent: Intent): IBinder? {
-        return null
+    override fun onBind(intent: Intent): IBinder {
+        return BleServiceBinder()
+    }
+
+    inner class BleServiceBinder : Binder() {
+        fun getService(): BleService {
+            return this@BleService
+        }
+    }
+
+    fun setPermissionRequestListener(listener: PermissionRequestListener) {
+        permissionRequestListener = listener
     }
 
     override fun onDestroy() {
