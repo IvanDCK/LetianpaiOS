@@ -19,6 +19,7 @@ import android.renderscript.Element
 import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import com.renhejia.robot.commandlib.log.LogUtils.logi
 import com.renhejia.robot.launcher.R
 import java.io.IOException
@@ -198,6 +199,7 @@ class SystemFunctionUtil {
                 powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "MyApp::MyWakelockTag")
             wakeLock.acquire()
         }
+        private var wakeLock: PowerManager.WakeLock? = null
 
         /**
          * 唤醒屏幕
@@ -205,13 +207,25 @@ class SystemFunctionUtil {
          * @param context
          */
         fun wakeUp(context: Context) {
-            val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            //val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
             try {
+                /*
                 powerManager.javaClass.getMethod(
                     "wakeUp", *arrayOf<Class<*>?>(
                         Long::class.javaPrimitiveType
                     )
                 ).invoke(powerManager, SystemClock.uptimeMillis())
+                 */
+                val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+                wakeLock = powerManager.newWakeLock(
+                    PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                    "LauncherActivity::WakelockTag"
+                )
+
+                wakeLock!!.acquire(10 * 60 * 1000L /*10 minutes*/)
+
+                wakeLock!!.release()
+
             } catch (e: IllegalAccessException) {
                 e.printStackTrace()
             } catch (e: InvocationTargetException) {

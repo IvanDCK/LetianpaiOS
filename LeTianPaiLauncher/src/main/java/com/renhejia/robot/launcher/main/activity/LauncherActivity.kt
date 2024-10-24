@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -34,10 +35,13 @@ class LauncherActivity : LauncherBaseActivity(), PermissionRequestListener {
     )
     private lateinit var bleConnectionManager: BleConnectionManager
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // getOTAStatus();
         setAppLanguage(this@LauncherActivity)
+
+
 
         val decorView = window.decorView
         val uiOptions =
@@ -91,7 +95,13 @@ class LauncherActivity : LauncherBaseActivity(), PermissionRequestListener {
             intent.data = Uri.parse("package:$packageName")
             startActivity(intent)
         }
+        //wakeLock?.acquire(10*60*1000L /*10 minutes*/)
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //wakeLock?.release()
     }
 
     private fun setTimeFormat() {
@@ -110,7 +120,10 @@ class LauncherActivity : LauncherBaseActivity(), PermissionRequestListener {
     }
 
     private fun inits() {
+
         SystemFunctionUtil.wakeUp(this@LauncherActivity)
+
+
         initListeners()
         registerCloseGuidedListener()
         //
