@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PaintFlagsDrawFilter
-import android.support.v7.widget.AppCompatImageView
 import android.util.ArrayMap
 import android.util.AttributeSet
 import android.util.Log
+import androidx.appcompat.widget.AppCompatImageView
 
 /**
  * 表情绘制的View

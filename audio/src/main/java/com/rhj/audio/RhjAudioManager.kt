@@ -1,5 +1,6 @@
 package com.rhj.audio
 
+import com.rhj.audio.BuildConfig
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.AudioAttributes

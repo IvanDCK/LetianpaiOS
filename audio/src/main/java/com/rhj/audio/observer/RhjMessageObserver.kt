@@ -81,13 +81,13 @@ class RhjMessageObserver : MessageObserver {
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
-                messageOutputTextBean.messageType = MessageBean.TYPE_OUTPUT
+                messageOutputTextBean.message_type = MessageBean.TYPE_OUTPUT
                 updateMessage(messageOutputTextBean)
             }
 
             "context.input.text" -> {
                 val messageInputTextBean = MessageInputTextBean()
-                messageInputTextBean.messageType = MessageBean.TYPE_INPUT
+                messageInputTextBean.message_type = MessageBean.TYPE_INPUT
                 try {
                     val jo = JSONObject(data)
                     if (jo.has("var")) {
@@ -106,7 +106,7 @@ class RhjMessageObserver : MessageObserver {
 
             "context.widget.content" -> {
                 val messageWidgetContentBean = MessageWidgetContentBean()
-                messageWidgetContentBean.messageType = MessageBean.TYPE_WIDGET_CONTENT
+                messageWidgetContentBean.message_type = MessageBean.TYPE_WIDGET_CONTENT
                 try {
                     val jo = JSONObject(data)
                     val title = jo.optString("title", "")
@@ -123,7 +123,7 @@ class RhjMessageObserver : MessageObserver {
 
             "context.widget.list" -> {
                 val messageWidgetListBean = MessageWidgetListBean()
-                messageWidgetListBean.messageType = MessageBean.TYPE_WIDGET_LIST
+                messageWidgetListBean.message_type = MessageBean.TYPE_WIDGET_LIST
                 try {
                     val jo = JSONObject(data)
                     val currentPage = jo.optInt("currentPage")
@@ -150,7 +150,7 @@ class RhjMessageObserver : MessageObserver {
 
             "context.widget.web" -> {
                 val messageWidgetWebBean = MessageWidgetWebBean()
-                messageWidgetWebBean.messageType = MessageBean.TYPE_WIDGET_WEB
+                messageWidgetWebBean.message_type = MessageBean.TYPE_WIDGET_WEB
                 try {
                     val jo = JSONObject(data)
                     val url = jo.optString("url")
@@ -163,7 +163,7 @@ class RhjMessageObserver : MessageObserver {
 
             "context.widget.custom" -> {
                 var messageWeatherBean = MessageWeatherBean()
-                messageWeatherBean.messageType = MessageBean.TYPE_WIDGET_WEATHER
+                messageWeatherBean.message_type = MessageBean.TYPE_WIDGET_WEATHER
                 try {
                     LogUtils.showLargeLog("RhjMessageObserver", "" + data)
                     val jo = JSONObject(data)
@@ -183,7 +183,7 @@ class RhjMessageObserver : MessageObserver {
             "context.widget.media" -> {
                 val jsonObject: JSONObject
                 val messageMusicListBean = MessageMediaListBean()
-                messageMusicListBean.messageType = MessageBean.TYPE_WIDGET_MEDIA
+                messageMusicListBean.message_type = MessageBean.TYPE_WIDGET_MEDIA
                 try {
                     jsonObject = JSONObject(data)
                     val count = jsonObject.optInt("count")

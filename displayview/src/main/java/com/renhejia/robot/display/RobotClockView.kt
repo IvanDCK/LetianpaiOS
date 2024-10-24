@@ -720,7 +720,7 @@ class RobotClockView : View, RobotPlatformListener {
             val backgroundPaint = Paint()
             backgroundPaint.isAntiAlias = true
             backgroundPaint.color = batteryProgress.getBgColor()
-            canvas.drawRect(batteryProgress.getDispRect(), backgroundPaint)
+            canvas.drawRect(batteryProgress.getDispRect()!!, backgroundPaint)
 
             val foregroundPaint = Paint()
             foregroundPaint.isAntiAlias = true
@@ -1174,7 +1174,8 @@ class RobotClockView : View, RobotPlatformListener {
                 bitmap = mResPool!!.getBitmap(background.getBackgroundFilename())
             }
             if (bitmap != null && background != null && background.getOrigRect() != null && background.getDispRect() != null) {
-                canvas.drawBitmap(bitmap, background.getOrigRect(), background.getDispRect(), mPaint)
+                canvas.drawBitmap(bitmap, background.getOrigRect(),
+                    background.getDispRect()!!, mPaint)
             }
         }
     }

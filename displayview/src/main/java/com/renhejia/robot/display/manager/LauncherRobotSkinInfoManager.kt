@@ -241,17 +241,17 @@ private constructor(private val mContext: Context) {
             val robotPlatformState = RobotPlatformState()
             //        WeatherInfoItem weatherInfoItem = new WeatherInfoItem();
 //        stepCount = (int) WolfPlatformManager.getInstance(mContext).getStepsData(mContext, 0, 0);
-            spineSkinInfoItem.batteryLevel = batteryLevel
+            spineSkinInfoItem.setBatteryLevel(batteryLevel)
             //        LogUtils.logi("Mars111333","batteryLevel: " + batteryLevel);
-            spineSkinInfoItem.bluetoothStatus = isBluetoothOn
+            spineSkinInfoItem.setBluetoothStatus(isBluetoothOn)
             //        LogUtils.logi("Mars111333","isBluetoothOn: " + isBluetoothOn);
-            spineSkinInfoItem.chargingStates = chargingStatus
+            spineSkinInfoItem.setChargingStates(chargingStatus)
             //        LogUtils.logi("Mars111333","chargingStates: " + chargingStates);
-            spineSkinInfoItem.volume = volume
+            spineSkinInfoItem.setVolume(volume)
             //        LogUtils.logi("Mars111333","volume: " + volume);
             spineSkinInfoItem.setWifiStates(wifiStates)
             //        LogUtils.logi("Mars111333","wifiStates: " + wifiStates);
-            spineSkinInfoItem.stepCount = stepCount
+            spineSkinInfoItem.setStepCount(stepCount)
 
             //        LogUtils.logi("Mars111333","stepCount: " + stepCount);
 //        weatherInfoItem.setAirQuality(airQuality);

@@ -61,17 +61,25 @@ class RobotExpressionViewGif : RelativeLayout, RobotExpressionConsts {
      */
     fun updateView(url: String) {
         if (url.lastIndexOf(".gif") > 0) {
-            Glide.with(mContext)
-                .load(url)
-                .asGif()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(ivExpression)
+            mContext?.let { context ->
+                ivExpression?.let { imageView ->
+                    Glide.with(context)
+                        .asGif()
+                        .load(url)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imageView)
+                }
+            }
         } else {
-            Glide.with(mContext)
-                .load(url)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(ivExpression)
+            mContext?.let { context ->
+                ivExpression?.let { imageView ->
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(url)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imageView)
+                }
+            }
         }
     }
 
@@ -80,11 +88,12 @@ class RobotExpressionViewGif : RelativeLayout, RobotExpressionConsts {
         ivExpression = findViewById(R.id.iv_expression)
         tvExpression = findViewById(R.id.tv_expression)
 
-        Glide.with(mContext)
-            .load(R.drawable.launche_bg)
-            .asBitmap()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(ivExpression)
+        mContext?.let {
+            Glide.with(it).asBitmap()
+                .load(R.drawable.launche_bg)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivExpression!!)
+        }
 
 
         //        if (LocaleUtils.isChinese()){

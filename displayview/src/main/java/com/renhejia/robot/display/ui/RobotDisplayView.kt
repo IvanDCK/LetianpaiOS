@@ -121,12 +121,12 @@ class RobotDisplayView : ViewGroup {
         //        platState.airQuality = infoItem.getWeatherInfoItem().getAirQuality();
 //        platState.currentTemp = infoItem.getWeatherInfoItem().getCurrentTemp();
 //        platState.weatherState = infoItem.getWeatherInfoItem().getWeatherState();
-        platState.batteryLevel = infoItem.batteryLevel
-        platState.batteryCharging = infoItem.chargingStates
-        platState.bluetoothEnabled = infoItem.bluetoothStatus
-        platState.mediaVolume = infoItem.volume
-        platState.stepNumber = infoItem.stepCount
-        platState.wifiEnabled = infoItem.wifiStatus
+        platState.batteryLevel = infoItem.getBatteryLevel()
+        platState.batteryCharging = infoItem.getChargingStates()
+        platState.bluetoothEnabled = infoItem.getBluetoothStatus()
+        platState.mediaVolume = infoItem.getVolume()
+        platState.stepNumber = infoItem.getStepCount()
+        platState.wifiEnabled = infoItem.getWifiStatus()
         mClockView!!.updateAll(platState)
     }
 
@@ -134,7 +134,7 @@ class RobotDisplayView : ViewGroup {
     fun loadSkin(pathName: String?) {
         skinPathName = pathName
 
-        if (!mResPool!!.isValidSpineSkin(pathName)) {
+        if (!pathName?.let { mResPool!!.isValidSpineSkin(it) }!!) {
             logi(
                 "Clock_Skin",
                 "skinPathName: $skinPathName"

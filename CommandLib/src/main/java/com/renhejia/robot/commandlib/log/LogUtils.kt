@@ -7,26 +7,34 @@ object LogUtils {
     @JvmStatic
     fun logi(tag: String?, message: String?) {
 //        if (BuildConfig.DEBUG) {
-        Log.i(tag, message)
+        if (message != null) {
+            Log.i(tag, message)
+        }
         //        }
     }
 
     fun logw(tag: String?, message: String?) {
 //        if (BuildConfig.DEBUG) {
-        Log.w(tag, message)
+        if (message != null) {
+            Log.w(tag, message)
+        }
         //        }
     }
 
     @JvmStatic
     fun logd(tag: String?, message: String?) {
 //        if (BuildConfig.DEBUG) {
-        Log.d(tag, message)
+        if (message != null) {
+            Log.d(tag, message)
+        }
         //        }
     }
 
     fun loge(tag: String?, message: String?) {
 //        if (BuildConfig.DEBUG) {
-        Log.e(tag, message)
+        if (message != null) {
+            Log.e(tag, message)
+        }
         //        }
     }
 

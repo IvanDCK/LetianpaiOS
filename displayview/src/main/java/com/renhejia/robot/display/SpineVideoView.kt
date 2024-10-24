@@ -4,11 +4,13 @@ import android.content.Context
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.widget.VideoView
 import java.io.FileNotFoundException
+import java.lang.ref.WeakReference
 import java.util.Random
 
 class SpineVideoView : VideoView {
@@ -148,12 +150,19 @@ class SpineVideoView : VideoView {
         }
     }
 
-    var handler: Handler = object : Handler() {
+
+
+    private val handler: Handler = SafeHandler(WeakReference(this))
+
+
+    private class SafeHandler(spinevideView: WeakReference<SpineVideoView>) : Handler(Looper.getMainLooper()) {
+        private val outer: WeakReference<SpineVideoView> = spinevideView
+
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
 
             when (msg.what) {
-                PLAY_VIDEO -> playAssetVideo(msg.arg1)
+                PLAY_VIDEO -> outer.get()?.playAssetVideo(msg.arg1)
             }
         }
     }

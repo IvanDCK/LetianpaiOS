@@ -1,8 +1,10 @@
 package com.renhejia.robot.expression.ui.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Handler
+import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -10,6 +12,7 @@ import android.view.SurfaceHolder
 import android.widget.VideoView
 import com.renhejia.robot.commandlib.log.LogUtils.logi
 import java.io.FileNotFoundException
+import java.lang.ref.WeakReference
 
 /**
  *
@@ -192,12 +195,16 @@ class RobotVideoView : VideoView {
     //        }
     //
     //    }
-    var handler: Handler = object : Handler() {
+    private val handler: Handler = SafeHandler(WeakReference(this))
+    
+    private class SafeHandler(robotVideoView: WeakReference<RobotVideoView>) : Handler(Looper.getMainLooper()) {
+        private val outer: WeakReference<RobotVideoView> = robotVideoView
+
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
 
             when (msg.what) {
-                PLAY_VIDEO -> playAssetVideo(msg.obj as String)
+                PLAY_VIDEO -> outer.get()?.playAssetVideo(msg.obj as String)
             }
         }
     }

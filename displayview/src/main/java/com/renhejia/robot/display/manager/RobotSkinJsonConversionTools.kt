@@ -267,37 +267,37 @@ object RobotSkinJsonConversionTools : ClockViewConsts {
 
             if (digitTimes != null) {
                 val digitList: List<RobotSkinNumber> = getDigitTime(digitTimes)
-                spineClockSkin.setDigitTimes(digitList)
+                spineClockSkin.digitTimes = (digitList)
             }
 
             if (backgrounds != null) {
                 val backgroundList: List<RobotSkinAnchor> = getBackgrounds(backgrounds)
-                spineClockSkin.setBackgrounds(backgroundList)
+                spineClockSkin.backgrounds = (backgroundList)
             }
 
             if (countdownEvent != null) {
                 val labelList: List<RobotSkinLabel> = getLabelTimes(countdownEvent)
-                spineClockSkin.setCountdownEvent(labelList)
+                spineClockSkin.countdownEvent = (labelList)
             }
 
             if (fansInfo != null) {
                 val labelList: List<RobotSkinLabel> = getLabels(fansInfo)
-                spineClockSkin.setFansInfo(labelList)
+                spineClockSkin.fansInfo=(labelList)
             }
 
             if (notices != null) {
                 val labelList: List<RobotSkinLabel> = getLabelTimes(notices)
-                spineClockSkin.setNotice(labelList)
+                spineClockSkin.notice =(labelList)
             }
 
             if (labelTimes != null) {
                 val labelList: List<RobotSkinLabel> = getLabelTimes(labelTimes)
-                spineClockSkin.setLabelTimes(labelList)
+                spineClockSkin.labelTimes = (labelList)
             }
 
             if (analogTimes != null) {
                 val analoglList: List<RobotSkinAnalogTime> = getAnalogTimes(analogTimes)
-                spineClockSkin.setAnalogTimes(analoglList)
+                spineClockSkin.analogTimes = analoglList
             }
         } catch (e: Exception) {
         }
